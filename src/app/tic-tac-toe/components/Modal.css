@@ -1,0 +1,61 @@
+.modal-backdrop {
+  position: fixed;
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+  width: 100dvw;
+  top: 0;
+  right: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 8, 20, 0.5);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  z-index: 6;
+}
+
+.modal {
+  background-color: hsl(215, 62%, 10%);
+  width: 40rem;
+  max-width: 80vw;
+  max-width: 80dvw;
+  min-height: 20rem;
+  max-height: 80dvh;
+  top: 10vh;
+  top: 10dvh;
+  border-radius: 1rem;
+  padding: 1rem;
+  z-index: 7;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal h3 {
+  font-size: 2rem;
+  margin-top: 2.5rem;
+  font-weight: bold;
+}
+
+.modal p {
+  margin-bottom: 5rem;  
+}
+
+.modal button {
+  background: hsl(212, 100%, 40%);
+  padding: 1rem 1.5rem;
+  border-radius: 0.85rem;
+  width: 100%;
+  transition: all 0.2S ease-in-out;
+}
+
+
+.modal button:hover {
+  background-color: hsl(212, 100%, 30%);
+}
+
+.modal button:active {
+  background-color: #000814;
+}

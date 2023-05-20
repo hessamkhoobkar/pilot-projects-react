@@ -8,6 +8,16 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+:root {
+  --darkest-algi: #042634;
+  --darker-algi: #052b3b;
+  --dark-algi: #053041;
+  --lemon-bitter: #c2d000;
+  --lemon: #d0df00;
+  --papaya: #f26419;
+  --white: #ffffff;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

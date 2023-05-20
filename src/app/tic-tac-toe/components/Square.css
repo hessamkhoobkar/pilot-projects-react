@@ -1,0 +1,36 @@
+.square {
+  background: hsl(215, 62%, 10%);
+  border: 1px solid #000814;
+  font-weight: bold;
+  font-size: 3.5rem;
+  line-height: 5rem;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  height: 5rem;
+  width: 5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.board-row:first-child .square:first-child {
+  border-top-left-radius: 0.85rem;
+}
+.board-row:first-child .square:last-child {
+  border-top-right-radius: 0.85rem;
+}
+
+.board-row:last-child .square:first-child {
+  border-bottom-left-radius: 0.85rem;
+}
+.board-row:last-child .square:last-child {
+  border-bottom-right-radius: 0.85rem;
+}
+
+.square:hover {
+  background-color: hsl(215, 64%, 12%);
+}
+
+.square:active {
+  background-color: #000814;
+}
