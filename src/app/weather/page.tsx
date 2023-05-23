@@ -7,6 +7,7 @@ import CarIcon from "./icons/Car";
 import PlayIcon from "./icons/Play";
 import PreviousIcon from "./icons/Previous";
 import NextIcon from "./icons/Next";
+import LoadingIcon from "./icons/Loading";
 
 interface FullCast {
   current: {
@@ -31,15 +32,21 @@ interface FullCast {
   };
 }
 
+interface DateError {
+  isError: false;
+  title: "";
+  body: "";
+}
+
 export default function Page() {
   const [data, setData] = useState<FullCast | null>(null);
-  const [isLoading, setLoading] = useState(false);
+  const [dateError, setDateError] = useState<DateError | null>(null);
+  const [isLoading, setLoading] = useState(true);
   const [date, setDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    setLoading(true);
     fetch(
-      "http://api.weatherapi.com/v1/forecast.json?key=14bb37f00dee48daadb170819232205&q=new york&days=3&aqi=no&alerts=no"
+      `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHERAPI_KEY}&q=new york&days=3&aqi=no&alerts=no`
     )
       .then((res) => res.json())
       .then((data: FullCast) => {
@@ -47,12 +54,22 @@ export default function Page() {
         setLoading(false);
       });
 
-    // Get date
-    const d = new Date();
-    const utc = d.getTime() + d.getTimezoneOffset() * 60000;
-    const nd = new Date(utc + 3600000 * -4);
+    const getDate = function () {
+      const mainDate = new Date();
+      const utcDate = mainDate.getTime() + mainDate.getTimezoneOffset() * 60000;
+      const NYDate = new Date(utcDate + 3600000 * -4);
+      return NYDate;
+    };
 
-    setDate(nd);
+    const interval = setInterval(() => {
+      setDate(getDate());
+    }, 1000);
+
+    setDate(getDate());
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   let weatherList: React.ReactNode;
@@ -84,47 +101,54 @@ export default function Page() {
   return (
     <div className="w-screen h-screen bg-slate-200 text-slate-800">
       <div className="grid grid-row-5 grid-cols-5 gap-4 max-w-6xl mx-auto pt-8">
-        <div className="bg-white col-start-1 col-span-2 row-start-1 row-span-3 rounded-3xl p-6 flex flex-col justify-start items-start">
-          <div className="font-medium text-slate-500 flex justify-start items-center w-full">
-            <ClockIcon size={24} className="mr-4" />
-            <span className="mr-1">
-              {date &&
-                date.toLocaleDateString([], {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })}
-            </span>
+        <div className="bg-white col-start-1 col-span-2 row-start-1 row-span-3 rounded-3xl p-6 flex flex-col justify-start items-start transition-all duration-1000 ease-in-out">
+          {isLoading && (
+            <div className="flex flex-col justify-center items-center grow w-full px-4">
+              <LoadingIcon size={128} className="animate-spin" />
+            </div>
+          )}
+          {data && (
+            <>
+              <div className="font-medium text-slate-500 flex justify-start items-center w-full">
+                <ClockIcon size={24} className="mr-4" />
+                <span className="mr-1">
+                  {date &&
+                    date.toLocaleDateString([], {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                </span>
 
-            <DotIcon size={24} className="mr-1" />
+                <DotIcon size={24} className="mr-1" />
 
-            <span>
-              {date &&
-                date.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-            </span>
-          </div>
-          <div className="flex flex-col justify-start items-start grow pt-4 w-full">
-            {!data && !isLoading && <p>No profile data</p>}
-            {isLoading && <p>Loading...</p>}
-            {data && (
-              <div className="flex flex-col justify-start items-start grow w-full px-4">
-                <div className="grow flex justify-start items-start pt-8">
-                  <span className="text-8xl font-bold">
-                    {data.current.temp_c}
-                  </span>
-                  <span className="text-xl font-bold text-slate-600">
-                    {data.current.condition.text}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center gap-4 w-full">
-                  {weatherList}
+                <span>
+                  {date &&
+                    date.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                </span>
+              </div>
+
+              <div className="flex flex-col justify-start items-start grow pt-4 w-full">
+                <div className="flex flex-col justify-start items-start grow w-full px-4">
+                  <div className="grow flex justify-start items-start pt-8">
+                    <span className="text-8xl font-bold">
+                      {data.current.temp_c}
+                    </span>
+                    <span className="text-xl font-bold text-slate-600">
+                      {data.current.condition.text}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center gap-4 w-full">
+                    {weatherList}
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
+            </>
+          )}
+          {/* {!data && !isLoading && <p>No profile data</p>} */}
         </div>
         <div
           className="bg-white col-start-1 col-span-2 row-start-4 row-span-2 rounded-3xl p-6 relative overflow-hidden"
