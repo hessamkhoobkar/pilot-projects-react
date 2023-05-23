@@ -1,11 +1,12 @@
 // This is somewhat of an anti-pattern
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./page.css";
 import Board from "./components/Board";
 import Modal from "./components/Modal";
+import Header from "./components/Header";
 
 export default function Page() {
   const [playerOne, setPlayerOne] = useState(true);
@@ -67,29 +68,43 @@ export default function Page() {
     }
   }
 
+  let isDisabled: boolean = true;
+
+  if (gameHistory.length > 1) {
+    isDisabled = false;
+  } else {
+    isDisabled = true;
+  }
+
   return (
     <div className="body-wrap">
-      <div className="player">
-        <span>Player One</span>
-        {playerOne === true && <span className="turn-badge">Your turn</span>}
-      </div>
+      <Header />
 
-      <div>
-        <Board
-          playerOne={playerOne}
-          squares={currentMove}
-          winner={winner}
-          onPlayerMove={gameProcesses}
-        />
-        <div className="game-action">
-          <button onClick={resetGame}>RESET GAME</button>
-          <button onClick={undoLastMove}>UNDO</button>
+      <div className="game-wrap">
+        <div className="player">
+          <span>Player One</span>
+          {playerOne === true && <span className="turn-badge">Your turn</span>}
         </div>
-      </div>
 
-      <div className="player">
-        <span>Player Two</span>
-        {playerOne !== true && <span className="turn-badge">Your turn</span>}
+        <div>
+          <Board
+            playerOne={playerOne}
+            squares={currentMove}
+            winner={winner}
+            onPlayerMove={gameProcesses}
+          />
+          <div className="game-action">
+            <button onClick={resetGame}>RESET GAME</button>
+            <button onClick={undoLastMove} disabled={isDisabled}>
+              UNDO
+            </button>
+          </div>
+        </div>
+
+        <div className="player">
+          <span>Player Two</span>
+          {playerOne !== true && <span className="turn-badge">Your turn</span>}
+        </div>
       </div>
 
       {showModal && (

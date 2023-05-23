@@ -31,6 +31,9 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -80%);
 }
 
 .modal h3 {
@@ -40,7 +43,7 @@
 }
 
 .modal p {
-  margin-bottom: 5rem;  
+  margin-bottom: 5rem;
 }
 
 .modal button {
@@ -48,9 +51,8 @@
   padding: 1rem 1.5rem;
   border-radius: 0.85rem;
   width: 100%;
-  transition: all 0.2S ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
-
 
 .modal button:hover {
   background-color: hsl(212, 100%, 30%);
