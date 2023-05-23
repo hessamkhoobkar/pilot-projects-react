@@ -34,9 +34,9 @@ interface FullCast {
 }
 
 interface DateError {
-  isError: false;
-  title: "";
-  body: "";
+  isError: boolean;
+  title: string;
+  body: string;
 }
 
 export default function Page() {
