@@ -8,6 +8,7 @@ import PlayIcon from "./icons/Play";
 import PreviousIcon from "./icons/Previous";
 import NextIcon from "./icons/Next";
 import LoadingIcon from "./icons/Loading";
+import SkullIcon from "./icons/Skull";
 
 interface FullCast {
   current: {
@@ -40,19 +41,28 @@ interface DateError {
 
 export default function Page() {
   const [data, setData] = useState<FullCast | null>(null);
-  const [dateError, setDateError] = useState<DateError | null>(null);
+  const [dataError, setDataError] = useState<DateError | null>(null);
   const [isLoading, setLoading] = useState(true);
   const [date, setDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHERAPI_KEY}&q=new york&days=3&aqi=no&alerts=no`
-    )
-      .then((res) => res.json())
-      .then((data: FullCast) => {
-        setData(data);
-        setLoading(false);
-      });
+    try {
+      fetch(
+        `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHERAPI_KEY}&q=new york&days=3&aqi=no&alerts=no`
+      )
+        .then((res) => res.json())
+        .then((data: FullCast) => {
+          setData(data);
+          setLoading(false);
+        });
+    } catch (error) {
+      const errorObj = {
+        isError: true,
+        title: "Weather API Error",
+        body: "An error occurred while fetching the weather information. Please check your internet connection and try again later.",
+      };
+      setDataError(errorObj);
+    }
 
     const getDate = function () {
       const mainDate = new Date();
@@ -148,7 +158,15 @@ export default function Page() {
               </div>
             </>
           )}
-          {/* {!data && !isLoading && <p>No profile data</p>} */}
+          {dataError && dataError?.isError && !isLoading && (
+            <div className="flex flex-col justify-start items-start grow w-full px-4 bg-red-100 text-red-600 rounded-2xl p-4 py-6">
+              <h3 className="text-2xl font-bold">{dataError.title}</h3>
+              <p>{dataError.body}</p>
+              <div className="flex justify-center items-center w-full py-12 text-red-500">
+                <SkullIcon size={96} />
+              </div>
+            </div>
+          )}
         </div>
         <div
           className="bg-white col-start-1 col-span-2 row-start-4 row-span-2 rounded-3xl p-6 relative overflow-hidden"
