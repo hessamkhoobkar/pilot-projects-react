@@ -29,7 +29,7 @@ export default function Page() {
   });
 
   return (
-    <div className="w-screen min-h-screen bg-slate-200 text-slate-900 pb-8">
+    <div className="w-full min-h-screen bg-slate-200 text-slate-900 pb-8">
       <div className="w-full max-w-5xl mx-auto pt-8">
         <NewUserForm onSubmit={handleFormSubmit} />
       </div>
