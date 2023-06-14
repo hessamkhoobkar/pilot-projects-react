@@ -2,10 +2,13 @@
 
 import React, { useState } from "react";
 import { NewUserFormProps } from "@/types/userinfo";
+import { createPortal } from "react-dom";
+import ErrorModal from "./ErrorModal";
 
 export default function NewUserForm({ onSubmit }: NewUserFormProps) {
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState("");
+  const [inputError, setInputError] = useState(false);
 
   function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     setUserName(event.target.value);
@@ -17,6 +20,11 @@ export default function NewUserForm({ onSubmit }: NewUserFormProps) {
 
   function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (userName === "" || userAge === "") {
+      setInputError(true);
+      return;
+    }
 
     const newUser = {
       userName: userName,
@@ -48,7 +56,6 @@ export default function NewUserForm({ onSubmit }: NewUserFormProps) {
           htmlFor="user-name"
         >
           <span className="text-sm">Please add user&apos;s name</span>
-
           <input
             className="bg-slate-50 border border-slate-300 text-slate-900 placeholder:text-slate-400 hover:bg-white hover:border-violet-400 focus:bg-white focus:outline-violet-600 rounded-xl py-2 px-4 transition-colors duration-200 ease-in-out w-full"
             placeholder="John Doe"
@@ -64,13 +71,14 @@ export default function NewUserForm({ onSubmit }: NewUserFormProps) {
           htmlFor="user-age"
         >
           <span className="text-sm">Please add user&apos;s age</span>
-
           <input
             className="bg-slate-50 border border-slate-300 text-slate-900 placeholder:text-slate-400 hover:bg-white hover:border-violet-400 focus:bg-white focus:outline-violet-600 rounded-xl py-2 px-4 transition-colors duration-200 ease-in-out w-full"
             placeholder="21"
             type="number"
             id="user-age"
             autoComplete="off"
+            min="0"
+            max="100"
             onChange={handleAgeChange}
             value={userAge}
           />
@@ -82,6 +90,8 @@ export default function NewUserForm({ onSubmit }: NewUserFormProps) {
           Sumbit user
         </button>
       </form>
+
+      {inputError && createPortal(<ErrorModal />, document.body)}
     </div>
   );
 }
