@@ -1,0 +1,56 @@
+.control_board {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 40rem;
+  background-color: rgb(0, 0, 0);
+  border-radius: 1rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding: 1rem;
+  margin-top: 0.25rem;
+  gap: 1rem;
+  border: 1px solid #222;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+}
+
+.control_board .actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.control_board button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 0.25rem;
+  min-width: 6rem;
+  height: 2.5rem;
+  padding: 1rem;
+  background-color: #2f3034;
+}
+
+.control_board button.is_lg {
+  height: 6rem;
+}
+
+.control_board button.is_sm {
+  min-width: 2.5rem;
+  height: 2.75rem;
+}
+
+.control_board button.home {
+  background-color: #de2f1c;
+}
+
+.control_board button.away {
+  background-color: #1659b2;
+}
+
+.control_board .actions button {
+  width: 100%;
+}
