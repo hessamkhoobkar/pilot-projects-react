@@ -93,7 +93,7 @@ export default function ResultCard({
 
   return (
     <div className="bg-slate-900 rounded-2xl px-6 py-4 w-full h-44 mt-8">
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {state === "success" && (
           <motion.div
             key="success"
